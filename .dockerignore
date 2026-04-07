@@ -1,0 +1,14 @@
+.git
+.gitignore
+.github
+.vscode
+.DS_Store
+node_modules
+frontend/node_modules
+frontend/.next
+frontend/out
+frontend/dist
+backend/.env
+frontend/.env.local
+*.log
+coverage

@@ -1,0 +1,5 @@
+[
+	{"company": "", "role": "DevOps Intern", "duration": "6 months", "description": "Worked on CI/CD pipelines and automation."},
+	{"company": " ", "role": "Cloud Engineer", "duration": "1 year", "description": "Managed AWS infrastructure and Kubernetes clusters."},
+	{"company": " ", "role": "SRE", "duration": "8 months", "description": "Implemented monitoring and reliability solutions."}
+]
