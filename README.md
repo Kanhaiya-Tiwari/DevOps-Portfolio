@@ -1,60 +1,177 @@
-# Portfolio 2026 - Production-Grade DevOps Platform
+# DevOps Portfolio — Kanhaiya Tiwari
 
-FAANG-style personal platform with futuristic UI, real-time DevOps telemetry, recruiter-focused AI chat, and containerized deployment.
+A production-grade personal portfolio platform for a DevOps & Cloud Engineer. Built with Next.js App Router, a Go backend, PostgreSQL, and fully containerized with Docker Compose. Includes a live WebSocket DevOps dashboard, Gemini AI recruiter chat, interactive multi-page sections, and a certificate gallery.
 
-## 🚀 Feature Set
+**Live:** [https://info.buildwithkanha.shop](https://info.buildwithkanha.shop)
 
-- **Dark Futuristic UI**: glassmorphism cards, layered gradients, micro-motion, and scroll reveal transitions
-- **Live DevOps Dashboard** (WebSocket-backed):
-  - CI/CD pipeline status tiles
-  - Kubernetes cluster simulation
-  - Prometheus-style monitoring metrics
-  - Streaming logs viewer
-- **Architecture + IaC Views**:
-  - AWS architecture preview blocks (ALB, EC2, RDS, S3)
+---
+
+## 🚀 Features
+
+- **Multi-page Next.js App Router** — Home, About, Experience, Projects, Skills, Gallery, Summary, Contact
+- **Live DevOps Dashboard** (WebSocket-backed real-time feed):
+  - CI/CD pipeline status tiles (Build, Test, Scan, Deploy)
+  - Kubernetes cluster simulation (pods, ready pods, deployments)
+  - Prometheus-style monitoring metrics (CPU, memory, latency, error rate)
+  - Streaming log viewer
+  - AWS architecture preview (ALB, EC2, RDS, S3)
   - Terraform configuration snapshot panel
-- **Gemini AI Recruiter Chat**:
-  - `/assistant/stream` token streaming endpoint
-  - ChatGPT-style interface with typing state
-  - Resume/project Q&A behavior and graceful fallback answers
-- **Large 3D Robot Assistant**:
-  - drag-to-rotate 360 interaction
-  - wheel-based zoom/rotation behavior
-  - voice input + voice response support
-- **Mobile-first responsive layout** across all sections
+- **Gemini AI Recruiter Chat** (`/assistant/stream`):
+  - Token-by-token SSE streaming with ChatGPT-style interface
+  - Portfolio Q&A with graceful fallback answers
+- **Robot Assistant** (`RobotAssistant.tsx` + `RobotAvatar.tsx`):
+  - Drag-to-rotate 360° interaction and wheel-based zoom
+  - Voice input and voice response support
+- **Contact Form** — saves to PostgreSQL and sends Gmail email notification to admin
+- **Gallery Page** — categorized image viewer (certificates, internship certificates, academic results) with fullscreen lightbox
+- **Scroll-reveal animations** and responsive layout across all sections
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Next.js 16, React 19, TypeScript
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **Backend**: Go (Golang)
-- **Database**: PostgreSQL
-- **Containers**: Docker, Docker Compose
-- **Realtime**: Gorilla WebSocket + streaming HTTP (SSE-style chunks)
+| Layer | Technology |
+|---|---|
+| Frontend | Next.js 16 (^16.1.1), React 19, TypeScript |
+| Styling | Tailwind CSS 3.4, custom `globals.css` design tokens |
+| Fonts | Manrope (body), Space Grotesk (title) via `next/font/google` |
+| Icons | Lucide React |
+| Backend | Go 1.25.5, gorilla/mux, godotenv |
+| Realtime | gorilla/websocket (WebSocket) + SSE chunked streaming |
+| AI | Google Gemini 1.5 Flash (`/v1beta/models/gemini-1.5-flash`) |
+| Email | Gmail SMTP via `GMAIL_USERNAME` + `GMAIL_APP_PASSWORD` |
+| Database | PostgreSQL 16 (lib/pq driver) |
+| Containers | Docker, Docker Compose |
+| Frontend runtime | nginx:alpine (static export served via nginx) |
+| Backend runtime | distroless (multi-stage Go build) |
+
+---
+
+## 📄 Pages
+
+| Route | Description |
+|---|---|
+| `/` | Home — hero, intro, featured projects, AI chat, contact form |
+| `/about` | About — identity, core strengths, current role, goals |
+| `/experience` | Experience — internships with expandable achievement lists |
+| `/projects` | Projects — 7 projects with GitHub links and tech tags |
+| `/skills` | Skills — 11 skills with interactive proficiency bars |
+| `/gallery` | Gallery — certifications list + filterable image gallery |
+| `/summary` | Summary — concise profile highlights and career objective |
+| `/contact` | Contact — contact details, resume download link, and message form |
+
+---
+
+## 🧩 Folder Structure
+
+```text
+DevOps-Portfolio/
+├── backend/
+│   ├── db/
+│   │   └── postgres.go          # DB connection init
+│   ├── email/                   # Gmail SMTP helper
+│   ├── migrations/              # SQL migration files
+│   ├── models/                  # Data models (Contact)
+│   ├── routes/
+│   │   ├── assistant.go         # Gemini standard + SSE streaming endpoints
+│   │   ├── contact.go           # Contact form save + email notification
+│   │   └── devops_stream.go     # WebSocket telemetry generator
+│   ├── main.go                  # Server entry point, CORS middleware
+│   ├── Dockerfile
+│   └── .env.example
+├── frontend/
+│   ├── app/
+│   │   ├── about/page.tsx
+│   │   ├── contact/page.tsx
+│   │   ├── experience/page.tsx
+│   │   ├── gallery/page.tsx
+│   │   ├── projects/page.tsx
+│   │   ├── skills/page.tsx
+│   │   ├── summary/page.tsx
+│   │   ├── layout.tsx           # Root layout with Nav
+│   │   └── page.tsx             # Home page
+│   ├── components/
+│   │   ├── CommandParser.tsx
+│   │   ├── ContactForm.tsx
+│   │   ├── Cursor.tsx
+│   │   ├── ImageGallery.tsx
+│   │   ├── LiveDevOpsDashboard.tsx
+│   │   ├── Nav.tsx
+│   │   ├── OutputBlock.tsx
+│   │   ├── RecruiterAIChat.tsx
+│   │   ├── RobotAssistant.tsx
+│   │   └── RobotAvatar.tsx
+│   ├── data/
+│   │   ├── experience.json
+│   │   ├── profile.json
+│   │   ├── projects.json
+│   │   ├── skills.json
+│   │   └── summary.json
+│   ├── styles/
+│   │   └── globals.css          # Design tokens, animations, utility classes
+│   ├── public/
+│   │   └── images/certificates/ # Certificate and academic result images
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   ├── next.config.js
+│   └── package.json
+├── docker-compose.yml
+├── .env.compose.example
+├── go.mod
+└── go.sum
+```
+
+---
+
+## 🔌 API Endpoints
+
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/contact` | Saves message to PostgreSQL and emails admin via Gmail |
+| `POST` | `/assistant` | Standard Gemini AI response (single JSON reply) |
+| `POST` | `/assistant/stream` | SSE streaming Gemini AI response (token-by-token chunks) |
+| `GET` | `/devops/ws` | WebSocket feed — emits telemetry metrics every 1.2 s |
+
+---
 
 ## 📦 Local Setup
 
 ### Prerequisites
-- Node.js 18+ and npm
+
+- Node.js 20+ and npm
 - Go 1.21+
-- PostgreSQL
+- PostgreSQL (or use Docker Compose)
 
 ### 1) Environment Setup
 
 ```bash
+# For Docker Compose (full stack)
 cp .env.compose.example .env
+
+# For running backend locally
 cp backend/.env.example backend/.env
+
+# For running frontend locally
 cp frontend/.env.example frontend/.env.local
 ```
 
-Required key variables:
+**Backend environment variables** (`backend/.env.example`):
 
-- `GEMINI_API_KEY`
-- `DATABASE_URL` (for local non-docker run)
-- `NEXT_PUBLIC_BACKEND_URL`
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `ADMIN_EMAIL` | Recipient address for contact form emails |
+| `GMAIL_USERNAME` | Gmail sender address |
+| `GMAIL_APP_PASSWORD` | Gmail App Password (not your account password) |
+| `GEMINI_API_KEY` | Google Gemini API key |
 
-### 2) Frontend Setup
+**Frontend environment variables** (`frontend/.env.example`):
+
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_BACKEND_URL` | Browser-accessible backend URL (default: `http://localhost:8080`) |
+
+### 2) Frontend
 
 ```bash
 cd frontend
@@ -62,99 +179,68 @@ npm install
 npm run dev
 ```
 
-The frontend will be available at `http://localhost:3000`
+Frontend available at `http://localhost:3000`
 
-### 3) Backend Setup
+### 3) Backend
 
 ```bash
-cd backend
 go mod download
 go run main.go
 ```
 
-## 🔌 API Endpoints
+Backend available at `http://localhost:8080`
 
-- `POST /contact` - contact form submission
-- `POST /assistant` - standard AI response/tip
-- `POST /assistant/stream` - streaming AI response chunks
-- `GET /devops/ws` - WebSocket telemetry feed for live dashboard
+---
 
 ## 🐳 Docker Deployment
 
-This repo now includes production-friendly Docker images:
+Production-ready Docker images are included:
 
-- Frontend: `node:20-slim` build stage + `nginx:alpine` runtime
-- Backend: Go multi-stage build + `distroless` runtime image
-- Database: `postgres:16-alpine`
+- **Frontend**: multi-stage `node:20` build → `nginx:alpine` runtime (static Next.js export)
+- **Backend**: multi-stage Go build → `distroless` runtime image
+- **Database**: `postgres:16-alpine` with health check
 
-### Run full platform
+### Run the full platform
 
 ```bash
 cp .env.compose.example .env
+# Edit .env and fill in GEMINI_API_KEY, GMAIL_USERNAME, GMAIL_APP_PASSWORD, ADMIN_EMAIL
 docker compose up --build -d
 ```
 
 ### Local URLs
 
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:8080`
-- Postgres: `localhost:5432`
+| Service | URL |
+|---|---|
+| Frontend | `http://localhost:3000` |
+| Backend API | `http://localhost:8080` |
+| PostgreSQL | `localhost:5432` |
 
-### Stop platform
+### Stop the platform
 
 ```bash
 docker compose down
 ```
 
-## 🧩 Folder Structure
-
-```text
-backend/
-  db/
-  routes/
-    assistant.go        # Gemini standard + streaming endpoints
-    devops_stream.go    # WebSocket telemetry stream
-frontend/
-  app/
-    page.tsx            # Main premium landing experience
-  components/
-    LiveDevOpsDashboard.tsx
-    RecruiterAIChat.tsx
-    RobotAssistant.tsx
-  styles/
-    globals.css         # Design system + motion
-```
-
-## ⚙️ Implementation Flow
-
-1. Build dark glass design primitives in `globals.css`.
-2. Compose modular section components for projects, skills, dashboard, and chat.
-3. Implement WebSocket telemetry generator in backend (`/devops/ws`).
-4. Add streaming assistant endpoint (`/assistant/stream`) with Gemini integration.
-5. Wire frontend chat parser to stream token chunks in real-time.
-6. Containerize services and validate with `docker compose up -d --build`.
-7. Add CI workflows for compose validation and image build checks.
+---
 
 ## 🚀 Deployment
 
-### GitHub Pages
+### GitHub Pages (Static Export)
 
-This repository includes a GitHub Actions workflow that builds the Next.js frontend as a static site and publishes it to the `gh-pages` branch. The workflow now uses **Node.js 20.x** (required by your Next.js version); make sure any local development uses the same or newer version. The site will be available at `https://<your‑username>.github.io/<your-repo>` once you enable GitHub Pages in the repository settings. Steps:
+The repository includes `.github/workflows/gh-pages.yml` which builds the Next.js frontend as a static site and publishes it to the `gh-pages` branch on every push to `main`. The workflow uses Node.js 20.x.
 
-1. Push your code to the `main` branch (the workflow also compiles the Go backend to catch any errors).
-2. Go to **Settings > Pages** in your GitHub repository.
-3. Choose the `gh-pages` branch as the source and save.
+Steps to enable:
 
-The workflow (`.github/workflows/gh-pages.yml`) runs automatically on every push to `main`.
+1. Push code to the `main` branch.
+2. Go to **Settings → Pages** in your GitHub repository.
+3. Set source to the `gh-pages` branch and save.
 
-Additional CI workflow (`.github/workflows/docker-compose.yml`) validates compose config and builds both Docker images on push/PR.
+### Docker Compose CI
 
-### Live Link
+`.github/workflows/docker-compose.yml` validates the compose config and builds both Docker images on push and pull requests.
 
-- Custom domain: `https://info.buildwithkanha.shop`
-- GitHub Pages fallback: `https://<your-username>.github.io/portfolio-2026`
-
-Build frontend production bundle locally:
+### Build frontend bundle locally
 
 ```bash
 cd frontend
@@ -162,18 +248,21 @@ npm run build
 npm start
 ```
 
-## 📝 License
-
-ISC
+---
 
 ## 👤 Author
 
-**Kanhaiya Tiwari**
-- Email: kt230088@gmail.com
+**Kanhaiya Tiwari** — DevOps & Cloud Engineer  
+Final-year B.Tech Computer Science Engineering student at AKS University, Satna  
+Based in Jabalpur, India
+
+- Email: [kt230088@gmail.com](mailto:kt230088@gmail.com)
 - GitHub: [@Kanhaiya-Tiwari](https://github.com/Kanhaiya-Tiwari)
 - LinkedIn: [Kanhaiya Tiwari](https://www.linkedin.com/in/kanhaiya-tiwari-46685422a)
 
 ---
 
-Built with ❤️ using Next.js and Go
+## 📝 License
+
+ISC
 
